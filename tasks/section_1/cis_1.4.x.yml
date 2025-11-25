@@ -1,34 +1,34 @@
 ---
 
-- name: "1.4.1 | PATCH | Ensure bootloader password is set"
-  block:
-      - name: "1.4.1 | PATCH | Ensure bootloader password is set"
-        ansible.builtin.template:
-            src: etc/grub.d/00_user.j2
-            dest: "{{ debian11cis_grub_user_file }}"
-            owner: root
-            group: root
-            mode: 'u+x,go-w'
-        notify: Grub update
+#- name: "1.4.1 | PATCH | Ensure bootloader password is set"
+#  block:
+#      - name: "1.4.1 | PATCH | Ensure bootloader password is set"
+#        ansible.builtin.template:
+#            src: etc/grub.d/00_user.j2
+#            dest: "{{ debian11cis_grub_user_file }}"
+#            owner: root
+#            group: root
+#            mode: 'u+x,go-w'
+#        notify: Grub update
 
-      - name: "1.4.1 | PATCH | Ensure bootloader password is set | allow unrestricted boot"
-        ansible.builtin.lineinfile:
-            path: "/etc/grub.d/10_linux"
-            regexp: '(^CLASS="--class gnu-linux --class gnu --class os).*"$'
-            line: '\g<1> --unrestricted"'
-            backrefs: true
-        notify: Grub update
-        when: not debian11cis_ask_passwd_to_boot
-  when:
-      - debian11cis_set_boot_pass
-      - debian11cis_rule_1_4_1
-  tags:
-      - level1-server
-      - level1-workstation
-      - automated
-      - patch
-      - rule_1.4.1
-      - grub
+#      - name: "1.4.1 | PATCH | Ensure bootloader password is set | allow unrestricted boot"
+#        ansible.builtin.lineinfile:
+#            path: "/etc/grub.d/10_linux"
+#            regexp: '(^CLASS="--class gnu-linux --class gnu --class os).*"$'
+#            line: '\g<1> --unrestricted"'
+#            backrefs: true
+#        notify: Grub update
+#        when: not debian11cis_ask_passwd_to_boot
+#  when:
+#      - debian11cis_set_boot_pass
+#      - debian11cis_rule_1_4_1
+#  tags:
+#      - level1-server
+#      - level1-workstation
+#      - automated
+#      - patch
+#      - rule_1.4.1
+#      - grub
 
 - name: "1.4.2 | PATCH | Ensure permissions on bootloader config are configured"
   block:
