@@ -15,11 +15,11 @@
             line: 'blacklist usb-storage'
             insertafter: EOF
 
-      - name: "1.1.10 | PATCH | Disable USB Storage | Remove usb-storage module"
-        community.general.modprobe:
-            name: usb-storage
-            state: absent
-        when: ansible_connection != 'docker'
+#      - name: "1.1.10 | PATCH | Disable USB Storage | Remove usb-storage module"
+#        community.general.modprobe:
+#            name: usb-storage
+#            state: absent
+#        when: ansible_connection != 'docker'
   notify: Update_Initramfs
   when:
       - debian11cis_rule_1_1_10
