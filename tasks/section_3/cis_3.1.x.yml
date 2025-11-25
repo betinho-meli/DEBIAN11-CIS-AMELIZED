@@ -1,56 +1,56 @@
 ---
 
-- name: "3.1.1 | PATCH | Ensure system is checked to determine if IPv6 is enabled"
-  block:
-      - name: "3.1.1 | PATCH | Ensure system is checked to determine if IPv6 is enabled | Replace ipv6.disable if it exists"
-        ansible.builtin.replace:
-            path: /etc/default/grub
-            regexp: '^(GRUB_CMDLINE_LINUX=.*)\bipv6\.disable=\d\b(.*$)'
-            replace: '\1ipv6.disable=1\2'
-        when: debian11cis_ipv6_disable == 'grub'
-        register: discovered_ipv6disable_replaced
-        notify: Grub update
+#- name: "3.1.1 | PATCH | Ensure system is checked to determine if IPv6 is enabled"
+# block:
+#      - name: "3.1.1 | PATCH | Ensure system is checked to determine if IPv6 is enabled | Replace ipv6.disable if it exists"
+#        ansible.builtin.replace:
+#            path: /etc/default/grub
+#            regexp: '^(GRUB_CMDLINE_LINUX=.*)\bipv6\.disable=\d\b(.*$)'
+#            replace: '\1ipv6.disable=1\2'
+#        when: debian11cis_ipv6_disable == 'grub'
+#        register: discovered_ipv6disable_replaced
+#        notify: Grub update
 
-      - name: "3.1.1 | PATCH | Ensure system is checked to determine if IPv6 is enabled | Check grub cmdline linux"
-        ansible.builtin.shell: grep "GRUB_CMDLINE_LINUX=" /etc/default/grub | cut -f2 -d'"'
-        changed_when: false
-        failed_when: false
-        check_mode: false
-        register: discovered_grub_cmdline_settings
-        when: debian11cis_ipv6_disable == 'grub'
+#      - name: "3.1.1 | PATCH | Ensure system is checked to determine if IPv6 is enabled | Check grub cmdline linux"
+#        ansible.builtin.shell: grep "GRUB_CMDLINE_LINUX=" /etc/default/grub | cut -f2 -d'"'
+#        changed_when: false
+#        failed_when: false
+#        check_mode: false
+#        register: discovered_grub_cmdline_settings
+#        when: debian11cis_ipv6_disable == 'grub'
 
-      - name: "3.1.1 | PATCH | Ensure system is checked to determine if IPv6 is enabled | Insert ipv6.disable if it doesn't exist"
-        ansible.builtin.lineinfile:
-            path: /etc/default/grub
-            regexp: '^(GRUB_CMDLINE_LINUX=".*)"$'
-            line: '\1 ipv6.disable=1"'
-            backrefs: true
-        when:
-            - debian11cis_ipv6_disable == 'grub'
-            - discovered_ipv6disable_replaced is not changed
-            - "'ipv6.disable' not in discovered_grub_cmdline_settings.stdout"
-        notify: Grub update
+#      - name: "3.1.1 | PATCH | Ensure system is checked to determine if IPv6 is enabled | Insert ipv6.disable if it doesn't exist"
+#        ansible.builtin.lineinfile:
+#            path: /etc/default/grub
+#            regexp: '^(GRUB_CMDLINE_LINUX=".*)"$'
+#            line: '\1 ipv6.disable=1"'
+#            backrefs: true
+#        when:
+#            - debian11cis_ipv6_disable == 'grub'
+#            - discovered_ipv6disable_replaced is not changed
+#            - "'ipv6.disable' not in discovered_grub_cmdline_settings.stdout"
+#        notify: Grub update
 
-      - name: "3.1.1 | PATCH | Ensure system is checked to determine if IPv6 is enabled | Remove net.ipv6.conf.all.disable_ipv6"
-        ansible.builtin.template:
-            src: "{{ item }}.j2"
-            dest: "/{{ item }}"
-            owner: root
-            group: root
-            mode: 'u-x,g-wx,o-rwx'
-        notify: Flush ipv6 route table
-        loop:
-            - etc/sysctl.d/60-disable_ipv6.conf
-        when: debian11cis_ipv6_disable == 'sysctl'
-  when:
-      - debian11cis_rule_3_1_1
-      - not debian11cis_ipv6_required
-  tags:
-      - level1-server
-      - level1-workstation
-      - patch
-      - rule_3.1.1
-      - ipv6
+#      - name: "3.1.1 | PATCH | Ensure system is checked to determine if IPv6 is enabled | Remove net.ipv6.conf.all.disable_ipv6"
+#        ansible.builtin.template:
+#            src: "{{ item }}.j2"
+#            dest: "/{{ item }}"
+#            owner: root
+#            group: root
+#            mode: 'u-x,g-wx,o-rwx'
+#        notify: Flush ipv6 route table
+#        loop:
+#            - etc/sysctl.d/60-disable_ipv6.conf
+#        when: debian11cis_ipv6_disable == 'sysctl'
+#  when:
+#      - debian11cis_rule_3_1_1
+#      - not debian11cis_ipv6_required
+#  tags:
+#      - level1-server
+#      - level1-workstation
+#      - patch
+#      - rule_3.1.1
+#      - ipv6
 
 - name: "3.1.2 | PATCH | Ensure wireless interfaces are disabled"
   block:
