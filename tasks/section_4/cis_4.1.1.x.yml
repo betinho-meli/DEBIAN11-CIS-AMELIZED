@@ -40,23 +40,23 @@
         check_mode: false
         register: discovered_grub_cmdline_settings
 
-      - name: "4.1.1.3 | PATCH | Ensure auditing for processes that start prior to auditd is enabled | Add setting if doesn't exist"
-        ansible.builtin.lineinfile:
-            path: /etc/default/grub
-            regexp: '^GRUB_CMDLINE_LINUX='
-            line: 'GRUB_CMDLINE_LINUX="{{ discovered_grub_cmdline_settings.stdout }} audit=1"'
-        when: "'audit=' not in discovered_grub_cmdline_settings.stdout"
-        notify: Grub update
+#      - name: "4.1.1.3 | PATCH | Ensure auditing for processes that start prior to auditd is enabled | Add setting if doesn't exist"
+#        ansible.builtin.lineinfile:
+#            path: /etc/default/grub
+#            regexp: '^GRUB_CMDLINE_LINUX='
+#            line: 'GRUB_CMDLINE_LINUX="{{ discovered_grub_cmdline_settings.stdout }} audit=1"'
+#        when: "'audit=' not in discovered_grub_cmdline_settings.stdout"
+#        notify: Grub update
 
-      - name: "4.1.1.3 | PATCH | Ensure auditing for processes that start prior to auditd is enabled | Update setting if exists"
-        ansible.builtin.replace:
-            dest: /etc/default/grub
-            regexp: 'audit=([0-9]+)'
-            replace: 'audit=1'
-            after: '^GRUB_CMDLINE_LINUX="'
-            before: '"'
-        notify: Grub update
-        when: "'audit=' in discovered_grub_cmdline_settings.stdout"
+#      - name: "4.1.1.3 | PATCH | Ensure auditing for processes that start prior to auditd is enabled | Update setting if exists"
+#        ansible.builtin.replace:
+#            dest: /etc/default/grub
+#            regexp: 'audit=([0-9]+)'
+#            replace: 'audit=1'
+#            after: '^GRUB_CMDLINE_LINUX="'
+#            before: '"'
+#        notify: Grub update
+#        when: "'audit=' in discovered_grub_cmdline_settings.stdout"
   when:
       - debian11cis_rule_4_1_1_3
   tags:
@@ -76,22 +76,22 @@
         check_mode: false
         register: discovered_grub_cmdline_settings
 
-      - name: "4.1.1.4 | PATCH | Ensure audit_backlog_limit is sufficient | Add setting if doesn't exist"
-        ansible.builtin.lineinfile:
-            path: /etc/default/grub
-            regexp: '^GRUB_CMDLINE_LINUX='
-            line: 'GRUB_CMDLINE_LINUX="{{ discovered_grub_cmdline_settings.stdout }} audit_backlog_limit={{ debian11cis_audit_back_log_limit }}"'
-        notify: Grub update
-        when: "'audit_backlog_limit=' not in discovered_grub_cmdline_settings.stdout"
+#      - name: "4.1.1.4 | PATCH | Ensure audit_backlog_limit is sufficient | Add setting if doesn't exist"
+#        ansible.builtin.lineinfile:
+#            path: /etc/default/grub
+#            regexp: '^GRUB_CMDLINE_LINUX='
+#            line: 'GRUB_CMDLINE_LINUX="{{ discovered_grub_cmdline_settings.stdout }} audit_backlog_limit={{ debian11cis_audit_back_log_limit }}"'
+#        notify: Grub update
+#        when: "'audit_backlog_limit=' not in discovered_grub_cmdline_settings.stdout"
 
-      - name: "4.1.1.4 | PATCH | Ensure audit_backlog_limit is sufficient | Update setting if exists"
-        ansible.builtin.replace:
-            dest: /etc/default/grub
-            regexp: 'audit_backlog_limit=([0-9]+)'
-            replace: 'audit_backlog_limit={{ debian11cis_audit_back_log_limit }}'
-            after: '^GRUB_CMDLINE_LINUX="'
-            before: '"'
-        notify: Grub update
+#      - name: "4.1.1.4 | PATCH | Ensure audit_backlog_limit is sufficient | Update setting if exists"
+#        ansible.builtin.replace:
+#            dest: /etc/default/grub
+#            regexp: 'audit_backlog_limit=([0-9]+)'
+#            replace: 'audit_backlog_limit={{ debian11cis_audit_back_log_limit }}'
+#            after: '^GRUB_CMDLINE_LINUX="'
+#            before: '"'
+#        notify: Grub update
   when:
       - debian11cis_rule_4_1_1_4
   tags:
