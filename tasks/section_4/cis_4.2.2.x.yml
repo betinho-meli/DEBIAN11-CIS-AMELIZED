@@ -90,7 +90,7 @@
             file: warning_facts.yml
         when: not debian11cis_rsyslog_ansible_managed
 
-      - name: "4.2.2.5 | PATCH | Ensure logging is configured | Automated rsyslog configuration"
+      - name: "4.2.2.5 | PATCH | Ensure logging is configured | Automated rsyslog configuration" #Posible edicion
         ansible.builtin.lineinfile:
             path: "{{ discovered_debian11cis_rsyslog_config_path.stdout }}"
             regexp: "{{ item.regexp }}"
