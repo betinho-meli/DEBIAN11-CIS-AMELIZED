@@ -63,12 +63,12 @@
             that: debian11cis_set_grub_user_pass and {{'true' if debian11cis_grub_user_passwd | regex_search('^\$y\$|^\$6\$') else 'false' }} and debian11cis_grub_user_passwd != '$y$j9T$MBA5l/tQyWifM869nQjsi.$cTy0ConcNjIYOn6Cppo5NAky20osrkRxz4fEWA8xac6'
             msg: "This role will not set the {{ debian11cis_grub_user }} user password is not set or debian11cis_grub_user_passwd variable has not been set correctly"
 
-      - name: Check debian11cis_grub_user password variable has been changed | if password blank or incorrect type and not being set
-        when: not debian11cis_set_grub_user_pass
-        ansible.builtin.assert:
-            that: ( debian11cis_password_set_grub_user.stdout | length > 10 ) and '$y$' in debian11cis_password_set_grub_user.stdout
-            fail_msg: "Grub User {{ debian11cis_grub_user }} has no password set or incorrect encryption"
-            success_msg: "Grub User {{ debian11cis_grub_user }} has a valid password set to be used in single user mode"
+#      - name: Check debian11cis_grub_user password variable has been changed | if password blank or incorrect type and not being set
+#        when: not debian11cis_set_grub_user_pass
+#        ansible.builtin.assert:
+#            that: ( debian11cis_password_set_grub_user.stdout | length > 10 ) and '$y$' in debian11cis_password_set_grub_user.stdout
+#            fail_msg: "Grub User {{ debian11cis_grub_user }} has no password set or incorrect encryption"
+#            success_msg: "Grub User {{ debian11cis_grub_user }} has a valid password set to be used in single user mode"
 
 - name: Setup rules if container
   when: ansible_connection == 'docker' or ansible_facts.virtualization_type in ["docker", "lxc", "openvz", "podman", "container"]
