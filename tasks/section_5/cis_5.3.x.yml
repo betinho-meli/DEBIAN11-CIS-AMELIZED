@@ -50,7 +50,7 @@
   ansible.builtin.replace:
       path: "{{ item }}"
       regexp: '^([^#|{% if system_is_ec2 %}ec2-user{% endif %}].*)NOPASSWD(.*)'
-      replace: '\1PASSWD\2'
+      #replace: '\1PASSWD\2'
       validate: '/usr/sbin/visudo -cf %s'
   loop: "{{ debian11cis_sudoers_files.stdout_lines }}"
   when:
