@@ -175,7 +175,7 @@
 - name: "3.3.7 | PATCH | Ensure Reverse Path Filtering is enabled"
   ansible.posix.sysctl:
       name: "{{ item }}"
-      value: '1'
+      value: '2'
       sysctl_set: true
       sysctl_file: "{{ debian11cis_sysctl_network_conf }}"
       state: present
