@@ -163,6 +163,50 @@
       - rule_3.5.1.6
       - ufw
 
+#this is the custom steps
+
+- name: "CIS add | UFW | Enable IPv6"
+  ansible.builtin.lineinfile:
+      path: /etc/default/ufw
+      regexp: '^IPV6='
+      line: 'IPV6=yes'
+  notify: Reload ufw
+  tags:
+      - ufw
+
+- name: "CIS add | UFW | Allow SSH 22/tcp"
+  community.general.ufw:
+      rule: allow
+      proto: tcp
+      port: '22'
+  notify: Reload ufw
+  tags:
+      - ufw
+
+- name: "CIS add | UFW | Allow Zabbix agent 10050/tcp (in)"
+  community.general.ufw:
+      rule: allow
+      proto: tcp
+      port: '10050'
+  notify: Reload ufw
+  tags:
+      - ufw
+      - zabbix
+      
+- name: "CIS add | UFW | Allow OUT to Zabbix server 10051/tcp"
+  community.general.ufw:
+      rule: allow
+      direction: out
+      proto: tcp
+      to_ip: "{{ zabbix_server_ip }}"
+      to_port: '10051'
+  notify: Reload ufw
+  tags:
+      - ufw
+      - zabbix
+      
+#and ends here
+
 - name: "3.5.1.7 | PATCH | Ensure ufw default deny firewall policy"
   community.general.ufw:
       default: deny
