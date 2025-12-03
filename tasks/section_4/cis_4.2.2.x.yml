@@ -90,31 +90,31 @@
             file: warning_facts.yml
         when: not debian11cis_rsyslog_ansible_managed
 
-      - name: "4.2.2.5 | PATCH | Ensure logging is configured | Automated rsyslog configuration" #Posible edicion
-        ansible.builtin.lineinfile:
-            path: "{{ discovered_debian11cis_rsyslog_config_path.stdout }}"
-            regexp: "{{ item.regexp }}"
-            line: "{{ item.line }}"
-            insertafter: "{{ item.insertafter }}"
-        with_items:
-            - { regexp: '^\*.emerg', line: '*.emerg                         :omusrmsg:*', insertafter: '^# Emergencies are sent to everybody logged in' }
-            - { regexp: '^auth,authpriv.\*', line: 'auth,authpriv.*                  /var/log/secure', insertafter: '^# First some standard log files.  Log by facility' }
-            - { regexp: '^mail.\*|^#mail.\*', line: 'mail.*                          -/var/log/mail', insertafter: '^# First some standard log files' }
-            - { regexp: '^cron.\*|^cron.\*', line: 'cron.*                          -/var/log/cron', insertafter: '^# First some standard log files' }
-            - { regexp: '^mail.info|^#mail.info', line: 'mail.info                      -/var/log/mail.info', insertafter: '^# Logging for the mail system' }
-            - { regexp: '^mail.warn|^#mail.warn', line: 'mail.warning                      -/var/log/mail.warn', insertafter: '^# Logging for the mail system.' }
-            - { regexp: '^mail.err|^#mail.err', line: 'mail.err                        /var/log/mail.err', insertafter: '^# Logging for the mail system.' }
-            - { regexp: '^\*.=warning;\*.=err|^#\*.=warning;\*.=err', line: '*.=warning;*.=err               -/var/log/warn', insertafter: '^# First some standard log files' }
-            - { regexp: '^\*.crit|^#\*.crit', line: '*.crit                           /var/log/warn', insertafter: '^# First some standard log files' }
-            - { regexp: '^\*.\*;mail.none;news.none|^#\*.\*;mail.none;news.none', line: '*.*;mail.none;news.none         -/var/log/messages', insertafter: '^# First some standard log files' }
-            - { regexp: '^local0,local1.\*|^#local0,local1.\*', line: 'local0,local1.*                 -/var/log/localmessages', insertafter: '^# First some standard log files' }
-            - { regexp: '^local2,local3.\*|^#local2,local3.\*', line: 'local2,local3.*                 -/var/log/localmessages', insertafter: '^# First some standard log files' }
-            - { regexp: '^local4,local5.\*|^#local4,local5.\*', line: 'local4,local5.*                 -/var/log/localmessages', insertafter: '^# First some standard log files' }
-            - { regexp: '^local6,local7.\*|^#local6,local7.\*', line: 'local6,local7.*                 -/var/log/localmessages', insertafter: '^# First some standard log files' }
-        loop_control:
-            label: "{{ item.line }}"
-        notify: Restart syslog service
-        when: debian11cis_rsyslog_ansible_managed
+      #- name: "4.2.2.5 | PATCH | Ensure logging is configured | Automated rsyslog configuration"
+       # ansible.builtin.lineinfile:
+       #     path: "{{ discovered_debian11cis_rsyslog_config_path.stdout }}"
+       #     regexp: "{{ item.regexp }}"
+       #     line: "{{ item.line }}"
+       #     insertafter: "{{ item.insertafter }}"
+       # with_items:
+       #     - { regexp: '^\*.emerg', line: '*.emerg                         :omusrmsg:*', insertafter: '^# Emergencies are sent to everybody logged in' }
+       #     - { regexp: '^auth,authpriv.\*', line: 'auth,authpriv.*                  /var/log/secure', insertafter: '^# First some standard log files.  Log by facility' }
+       #     - { regexp: '^mail.\*|^#mail.\*', line: 'mail.*                          -/var/log/mail', insertafter: '^# First some standard log files' }
+       #     - { regexp: '^cron.\*|^cron.\*', line: 'cron.*                          -/var/log/cron', insertafter: '^# First some standard log files' }
+       #     - { regexp: '^mail.info|^#mail.info', line: 'mail.info                      -/var/log/mail.info', insertafter: '^# Logging for the mail system' }
+       #     - { regexp: '^mail.warn|^#mail.warn', line: 'mail.warning                      -/var/log/mail.warn', insertafter: '^# Logging for the mail system.' }
+       #     - { regexp: '^mail.err|^#mail.err', line: 'mail.err                        /var/log/mail.err', insertafter: '^# Logging for the mail system.' }
+       #     - { regexp: '^\*.=warning;\*.=err|^#\*.=warning;\*.=err', line: '*.=warning;*.=err               -/var/log/warn', insertafter: '^# First some standard log files' }
+       #     - { regexp: '^\*.crit|^#\*.crit', line: '*.crit                           /var/log/warn', insertafter: '^# First some standard log files' }
+       #     - { regexp: '^\*.\*;mail.none;news.none|^#\*.\*;mail.none;news.none', line: '*.*;mail.none;news.none         -/var/log/messages', insertafter: '^# First some standard log files' }
+       #     - { regexp: '^local0,local1.\*|^#local0,local1.\*', line: 'local0,local1.*                 -/var/log/localmessages', insertafter: '^# First some standard log files' }
+       #     - { regexp: '^local2,local3.\*|^#local2,local3.\*', line: 'local2,local3.*                 -/var/log/localmessages', insertafter: '^# First some standard log files' }
+       #     - { regexp: '^local4,local5.\*|^#local4,local5.\*', line: 'local4,local5.*                 -/var/log/localmessages', insertafter: '^# First some standard log files' }
+       #     - { regexp: '^local6,local7.\*|^#local6,local7.\*', line: 'local6,local7.*                 -/var/log/localmessages', insertafter: '^# First some standard log files' }
+       # loop_control:
+       #     label: "{{ item.line }}"
+       # notify: Restart syslog service
+       # when: debian11cis_rsyslog_ansible_managed
   vars:
       warn_control_id: '4.2.2.5'
   when:
